@@ -11,6 +11,7 @@ type Auth {
 }
 
 type Query {
+  test: String!
   me: User
 }
 
