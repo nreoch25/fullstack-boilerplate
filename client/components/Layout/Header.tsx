@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Link from "next/link";
 import {
   Collapse,
   Navbar,
@@ -21,12 +22,21 @@ const Header = () => {
   return (
     <div>
       <Navbar color="light" light expand="md">
-        <NavbarBrand href="/">NextJS GraphQL</NavbarBrand>
+        <Link href="/">
+          <NavLink
+            style={{ cursor: "pointer", fontSize: "20px" }}
+            className="font-weight-bold"
+          >
+            NextJS GraphQL
+          </NavLink>
+        </Link>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="ml-auto" navbar>
             <NavItem>
-              <NavLink href="/">Menu 1</NavLink>
+              <Link href="/register">
+                <NavLink href="/">Register</NavLink>
+              </Link>
             </NavItem>
             <NavItem>
               <NavLink href="/">Menu 2</NavLink>
