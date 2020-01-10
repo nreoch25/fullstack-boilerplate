@@ -21,10 +21,20 @@ const apolloServer = new ApolloServer({
   resolvers,
   dataSources: () => ({
     authAPI: new AuthAPI()
-  })
+  }),
+  context: ({ req, res }) => {
+    return {
+      req,
+      res
+    };
+  }
 });
 
-apolloServer.applyMiddleware({ app, path: "/graphql" });
+apolloServer.applyMiddleware({
+  app,
+  path: "/graphql",
+  cors: { origin: `${process.env.CLIENT_URI}`, credentials: true }
+});
 
 app.get(
   "/playground",

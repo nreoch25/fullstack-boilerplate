@@ -1,24 +1,23 @@
 import { Fragment, useState } from "react";
 import { useMutation } from "@apollo/react-hooks";
 import { Alert, Button, Form, FormGroup, Input } from "reactstrap";
-import REGISTER_MUTATION from "../../graphql/register.mutation";
+import LOGIN_MUTATION from "../../graphql/login.mutation";
 
-const Register = () => {
+const Login = () => {
   const [values, setValues] = useState({
-    name: "",
     email: "",
     password: "",
     error: "",
     message: ""
   });
 
-  const [register] = useMutation(REGISTER_MUTATION, {
+  const [register] = useMutation(LOGIN_MUTATION, {
     onCompleted: data => {
-      if (!data.register.success) {
-        setValues({ ...values, error: data.register.error, message: "" });
+      if (!data.login.success) {
+        setValues({ ...values, error: data.login.error, message: "" });
       } else {
-        localStorage.setItem("fsb-token", `Bearer ${data.register.token}`);
-        setValues({ ...values, error: "", message: "successfully registered" });
+        localStorage.setItem("fsb-token", `Bearer ${data.login.token}`);
+        setValues({ ...values, error: "", message: "successfully logged in" });
       }
     }
   });
@@ -30,7 +29,6 @@ const Register = () => {
     evt.preventDefault();
     register({
       variables: {
-        name: values.name,
         email: values.email,
         password: values.password
       }
@@ -39,14 +37,6 @@ const Register = () => {
   return (
     <Fragment>
       <Form onSubmit={handleSubmit} className="mb-3">
-        <FormGroup>
-          <Input
-            type="text"
-            value={values.name}
-            placeholder="Type your name"
-            onChange={handleChange("name")}
-          />
-        </FormGroup>
         <FormGroup>
           <Input
             type="email"
@@ -73,4 +63,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Login;

@@ -39,7 +39,9 @@ const Header = () => {
               </Link>
             </NavItem>
             <NavItem>
-              <NavLink href="/">Menu 2</NavLink>
+              <Link href="/login">
+                <NavLink href="/login">Login</NavLink>
+              </Link>
             </NavItem>
             <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret>

@@ -107,3 +107,5 @@ dist
 .vscode-test
 
 .DS_Store
+
+todo.txt

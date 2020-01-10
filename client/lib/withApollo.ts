@@ -2,23 +2,30 @@ import { ApolloClient } from "apollo-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import withApollo from "next-with-apollo";
 import { createHttpLink } from "apollo-link-http";
-import fetch from "isomorphic-unfetch";
-
-const GRAPHQL_URL = "http://localhost:8000/graphql";
-
-const link = createHttpLink({
-  fetch, // Switches between unfetch & node-fetch for client & server.
-  uri: GRAPHQL_URL
-});
+import { ApolloLink } from "apollo-link";
 
 export default withApollo(
   // You can get headers and ctx (context) from the callback params
   // e.g. ({ headers, ctx, initialState })
-  ({ initialState }) =>
-    new ApolloClient({
-      link: link,
+  ({ initialState }) => {
+    const authLink = new ApolloLink((operation: any, forward: any) => {
+      operation.setContext({
+        fetchOptions: {
+          credentials: "include"
+        }
+      });
+      return forward(operation);
+    });
+
+    const httpLink = createHttpLink({
+      uri: "http://localhost:8000/graphql"
+    });
+
+    return new ApolloClient({
+      link: authLink.concat(httpLink),
       cache: new InMemoryCache()
         //  rehydrate the cache using the initial data passed from the server:
         .restore(initialState || {})
-    })
+    });
+  }
 );

@@ -1,18 +1,18 @@
 import { Row, Col } from "reactstrap";
 import Layout from "../components/Layout";
-import Register from "../components/Auth/Register";
+import Login from "../components/Auth/Login";
 
-const RegisterPage = () => {
+const LoginPage = () => {
   return (
     <Layout>
       <Row>
         <Col md={{ size: 6, offset: 3 }}>
-          <h1 className="text-center">Register</h1>
-          <Register />
+          <h1 className="text-center">Login</h1>
+          <Login />
         </Col>
       </Row>
     </Layout>
   );
 };
 
-export default RegisterPage;
+export default LoginPage;
