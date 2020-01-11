@@ -7,6 +7,7 @@ const Mutation = {
   ) => {
     try {
       const registerUser = await authAPI.register(name, email, password);
+
       res.cookie("fsb-token", registerUser.token, {
         httpOnly: true,
         maxAge: 1000 * 60 * 60 * 24 // 1 day cookie

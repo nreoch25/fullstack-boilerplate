@@ -16,7 +16,7 @@ const Login = () => {
       if (!data.login.success) {
         setValues({ ...values, error: data.login.error, message: "" });
       } else {
-        localStorage.setItem("fsb-token", `Bearer ${data.login.token}`);
+        localStorage.setItem("fsb-token", data.login.token);
         setValues({ ...values, error: "", message: "successfully logged in" });
       }
     }

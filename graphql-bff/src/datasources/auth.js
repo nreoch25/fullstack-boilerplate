@@ -6,10 +6,7 @@ class AuthAPI extends RESTDataSource {
     this.baseURL = process.env.AUTH_API;
   }
   willSendRequest(request) {
-    const { cookie } = this.context.req.headers;
-    if (cookie.includes("fsb-token")) {
-      request.headers.set("Authorization", `Bearer ${cookie.split("=")[1]}`);
-    }
+    request.headers.set("Authorization", this.context.req.token);
   }
   async register(name, email, password) {
     const response = await this.post("register", { name, email, password });
@@ -17,6 +14,10 @@ class AuthAPI extends RESTDataSource {
   }
   async login(email, password) {
     const response = await this.post("login", { email, password });
+    return response;
+  }
+  async me() {
+    const response = await this.get("me");
     return response;
   }
 }

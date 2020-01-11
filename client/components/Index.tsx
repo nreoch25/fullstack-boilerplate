@@ -1,19 +1,20 @@
 import { Fragment } from "react";
 import { useQuery } from "@apollo/react-hooks";
-import TEST_QUERY from "../graphql/test.query";
+import ME_QUERY from "../graphql/me.query";
 
 const Index = () => {
-  const { data, loading, error } = useQuery(TEST_QUERY);
+  const { data, loading, error } = useQuery(ME_QUERY);
   if (loading) {
     return <p>Loading...</p>;
   }
 
   if (error) {
-    return <p>Error: {JSON.stringify(error)}</p>;
+    return <p>Error: {JSON.stringify(error.message)}</p>;
   }
   return (
     <Fragment>
-      <h1>Index Page: {data.test}</h1>
+      <h1>Index Page</h1>
+      <pre>{JSON.stringify(data.me)}</pre>
     </Fragment>
   );
 };

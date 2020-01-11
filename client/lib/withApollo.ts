@@ -7,11 +7,16 @@ import { ApolloLink } from "apollo-link";
 export default withApollo(
   // You can get headers and ctx (context) from the callback params
   // e.g. ({ headers, ctx, initialState })
-  ({ initialState }) => {
+  ({ initialState, headers }) => {
     const authLink = new ApolloLink((operation: any, forward: any) => {
+      const token = process.browser ? localStorage.getItem("fsb-token") : null;
       operation.setContext({
         fetchOptions: {
           credentials: "include"
+        },
+        headers: {
+          ...headers,
+          Authorization: token ? `Bearer ${token}` : ""
         }
       });
       return forward(operation);

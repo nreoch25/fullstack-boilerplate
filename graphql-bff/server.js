@@ -4,6 +4,7 @@ const expressPlayground = require("graphql-playground-middleware-express")
   .default;
 const { readFileSync } = require("fs");
 const { createServer } = require("http");
+const cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
 dotenv.config();
 const AuthAPI = require("./src/datasources/auth");
@@ -15,6 +16,25 @@ const resolvers = require("./src/resolvers");
 
 const app = express();
 const port = process.env.PORT || 8000;
+
+// Cookie Parser
+app.use(cookieParser());
+
+// Middleware to extract authorization token
+app.use((req, res, next) => {
+  // Check Authorization header first
+  const { authorization } = req.headers;
+  if (authorization) {
+    req.token = authorization;
+  } else {
+    // Check Cookie if no Authorization header is found
+    const { "fsb-token": fsbToken } = req.cookies;
+    if (fsbToken) {
+      req.token = `Bearer ${fsbToken}`;
+    }
+  }
+  next();
+});
 
 const apolloServer = new ApolloServer({
   typeDefs,
