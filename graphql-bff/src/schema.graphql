@@ -14,9 +14,14 @@ type Query {
   me: User
 }
 
+type Message {
+  message: String!
+}
+
 type Mutation {
   register(input: registerInput!): Auth!
   login(input: loginInput!): Auth!
+  logout: Message!
 }
 
 input registerInput {

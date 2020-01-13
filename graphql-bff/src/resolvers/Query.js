@@ -4,10 +4,7 @@ const Query = {
       const me = await authAPI.me();
       return me.data;
     } catch (error) {
-      return {
-        success: false,
-        error: error.extensions.response.body.error
-      };
+      return null;
     }
   }
 };

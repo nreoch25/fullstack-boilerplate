@@ -39,6 +39,12 @@ const Mutation = {
         error: error.extensions.response.body.error
       };
     }
+  },
+  logout: (root, args, { res }, info) => {
+    res.clearCookie("fsb-token");
+    return {
+      message: "User logged out successfully"
+    };
   }
 };
 

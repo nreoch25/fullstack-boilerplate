@@ -54,7 +54,7 @@ const Login = () => {
           />
         </FormGroup>
         <Button type="submit" color="primary" block>
-          Signup
+          Login
         </Button>
       </Form>
       {values.error && <Alert color="danger">{values.error}</Alert>}
