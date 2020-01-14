@@ -1,7 +1,8 @@
 import { Fragment, useState } from "react";
 import { useMutation } from "@apollo/react-hooks";
-import { Alert, Button, Form, FormGroup, Input } from "reactstrap";
+import { UncontrolledAlert, Button, Form, FormGroup, Input } from "reactstrap";
 import REGISTER_MUTATION from "../../graphql/register.mutation";
+import ME_QUERY from "../../graphql/me.query";
 
 const Register = () => {
   const [values, setValues] = useState({
@@ -18,9 +19,16 @@ const Register = () => {
         setValues({ ...values, error: data.register.error, message: "" });
       } else {
         localStorage.setItem("fsb-token", `Bearer ${data.register.token}`);
-        setValues({ ...values, error: "", message: "successfully registered" });
+        setValues({
+          name: "",
+          email: "",
+          password: "",
+          error: "",
+          message: "successfully registered"
+        });
       }
-    }
+    },
+    refetchQueries: [{ query: ME_QUERY }]
   });
 
   const handleChange = (name: string) => (evt: any) => {
@@ -67,8 +75,12 @@ const Register = () => {
           Signup
         </Button>
       </Form>
-      {values.error && <Alert color="danger">{values.error}</Alert>}
-      {values.message && <Alert color="success">{values.message}</Alert>}
+      {values.error && (
+        <UncontrolledAlert color="danger">{values.error}</UncontrolledAlert>
+      )}
+      {values.message && (
+        <UncontrolledAlert color="success">{values.message}</UncontrolledAlert>
+      )}
     </Fragment>
   );
 };

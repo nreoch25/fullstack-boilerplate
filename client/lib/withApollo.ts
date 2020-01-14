@@ -3,6 +3,7 @@ import { InMemoryCache } from "apollo-cache-inmemory";
 import withApollo from "next-with-apollo";
 import { createHttpLink } from "apollo-link-http";
 import { ApolloLink } from "apollo-link";
+// import { typeDefs, resolvers } from "../resolvers";
 
 export default withApollo(
   // You can get headers and ctx (context) from the callback params
@@ -26,11 +27,14 @@ export default withApollo(
       uri: "http://localhost:8000/graphql"
     });
 
+    const cache = new InMemoryCache().restore(initialState || {});
+
     return new ApolloClient({
       link: authLink.concat(httpLink),
-      cache: new InMemoryCache()
-        //  rehydrate the cache using the initial data passed from the server:
-        .restore(initialState || {})
+      cache,
+      connectToDevTools: true
+      // typeDefs,
+      // resolvers
     });
   }
 );

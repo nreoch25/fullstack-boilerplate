@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, Fragment } from "react";
+import { useQuery, useMutation } from "@apollo/react-hooks";
+import Router from "next/router";
 import Link from "next/link";
 import {
   Collapse,
@@ -12,14 +14,31 @@ import {
   DropdownMenu,
   DropdownItem
 } from "reactstrap";
+import ME_QUERY from "../../graphql/me.query";
+import LOGOUT_MUTATION from "../../graphql/logout.mutation";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { loading, error, data } = useQuery(ME_QUERY);
+  const [logout] = useMutation(LOGOUT_MUTATION, {
+    onCompleted: () => Router.push("/login"),
+    refetchQueries: [{ query: ME_QUERY }]
+  });
 
   const toggle = () => setIsOpen(!isOpen);
 
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {JSON.stringify(error.message)}</p>;
+  }
+
+  console.log("HEADER - USER", data.me);
+
   return (
-    <div>
+    <Fragment>
       <Navbar color="light" light expand="md">
         <Link href="/">
           <NavLink
@@ -32,31 +51,50 @@ const Header = () => {
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="ml-auto" navbar>
-            <NavItem>
-              <Link href="/register">
-                <NavLink href="/">Register</NavLink>
-              </Link>
-            </NavItem>
-            <NavItem>
-              <Link href="/login">
-                <NavLink href="/login">Login</NavLink>
-              </Link>
-            </NavItem>
-            <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav caret>
-                Options
-              </DropdownToggle>
-              <DropdownMenu right>
-                <DropdownItem>Option 1</DropdownItem>
-                <DropdownItem>Option 2</DropdownItem>
-                <DropdownItem divider />
-                <DropdownItem>Reset</DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
+            {!data.me && (
+              <Fragment>
+                <NavItem>
+                  <Link href="/register">
+                    <NavLink href="/">Register</NavLink>
+                  </Link>
+                </NavItem>
+                <NavItem>
+                  <Link href="/login">
+                    <NavLink href="/login">Login</NavLink>
+                  </Link>
+                </NavItem>
+              </Fragment>
+            )}
+
+            {data.me && (
+              <Fragment>
+                <NavItem>
+                  <Link href="/protected">
+                    <NavLink href="/">Protected</NavLink>
+                  </Link>
+                </NavItem>
+                <UncontrolledDropdown nav inNavbar>
+                  <DropdownToggle nav caret>
+                    {data.me.name}
+                  </DropdownToggle>
+                  <DropdownMenu right>
+                    <DropdownItem
+                      onClick={() => {
+                        localStorage.removeItem("fsb-token");
+                        logout();
+                      }}
+                    >
+                      Logout
+                    </DropdownItem>
+                    {/* <DropdownItem divider /> */}
+                  </DropdownMenu>
+                </UncontrolledDropdown>
+              </Fragment>
+            )}
           </Nav>
         </Collapse>
       </Navbar>
-    </div>
+    </Fragment>
   );
 };
 
