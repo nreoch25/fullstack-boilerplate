@@ -16,7 +16,8 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "graphql": "^14.5.8",
-    "graphql-playground-middleware-express": "^1.7.12"
+    "graphql-playground-middleware-express": "^1.7.12",
+    "graphql-resolvers": "^0.3.3"
   },
   "devDependencies": {
     "nodemon": "^2.0.2"
