@@ -1,11 +1,12 @@
 import Layout from "../components/Layout";
 import Private from "../components/Auth/Private";
+import Protected from "../components/Protected";
 
 const ProtectedPage = () => {
   return (
     <Layout>
       <Private>
-        <h1>Protected</h1>
+        <Protected />
       </Private>
     </Layout>
   );

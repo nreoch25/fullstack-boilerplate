@@ -12,6 +12,7 @@ type Auth {
 
 type Query {
   me: User
+  protected: Message!
 }
 
 type Message {

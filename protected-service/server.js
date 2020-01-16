@@ -1,35 +1,22 @@
 const express = require("express");
 const morgan = require("morgan");
-const cookieParser = require("cookie-parser");
 const colors = require("colors");
 const dotenv = require("dotenv");
-const errorHandler = require("./middleware/error");
-
-const connectDB = require("./database");
 // Routes
-const auth = require("./routes/auth");
+const protected = require("./routes/protected");
 
 // Load environment variables
 dotenv.config();
 
-// Connect to Database
-connectDB();
-
 const app = express();
 
 // Middleware
-app.use(express.json());
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
-// Cookie Parser
-app.use(cookieParser());
-
 // Routers
-app.use("/api/v1/auth", auth);
-
-app.use(errorHandler);
+app.use("/api/v1/protected", protected);
 
 const PORT = process.env.PORT || 5000;
 

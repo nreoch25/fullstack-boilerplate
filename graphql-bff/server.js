@@ -5,9 +5,11 @@ const expressPlayground = require("graphql-playground-middleware-express")
 const { readFileSync } = require("fs");
 const { createServer } = require("http");
 const cookieParser = require("cookie-parser");
+const colors = require("colors");
 const dotenv = require("dotenv");
 dotenv.config();
 const AuthAPI = require("./src/datasources/auth");
+const ProtectedAPI = require("./src/datasources/protected");
 
 const typeDefs = gql(
   readFileSync("./src/schema.graphql", { encoding: "utf-8" })
@@ -40,7 +42,8 @@ const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
   dataSources: () => ({
-    authAPI: new AuthAPI()
+    authAPI: new AuthAPI(),
+    protectedAPI: new ProtectedAPI()
   }),
   context: ({ req, res }) => {
     return {
@@ -68,6 +71,6 @@ const PORT = process.env.PORT || 8000;
 const httpServer = createServer(app);
 
 httpServer.listen(port, () => {
-  console.log(`Server listening on PORT ${PORT}`);
-  console.log(`GraphQL Endpoint: ${apolloServer.graphqlPath}`);
+  console.log(`Server listening on PORT ${PORT}`.magenta.bold);
+  console.log(`GraphQL Endpoint: ${apolloServer.graphqlPath}`.magenta.bold);
 });

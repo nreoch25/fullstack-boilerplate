@@ -35,8 +35,6 @@ const Header = () => {
     return <p>Error: {JSON.stringify(error.message)}</p>;
   }
 
-  console.log("HEADER - USER", data.me);
-
   return (
     <Fragment>
       <Navbar color="light" light expand="md">
