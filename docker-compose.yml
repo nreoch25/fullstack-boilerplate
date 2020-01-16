@@ -1,0 +1,67 @@
+version: "2.4"
+
+services:
+  nginx:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./nginx
+    ports:
+      - "80:80"
+    networks:
+      - frontend
+      - backend
+    depends_on:
+      - client
+      - graphql
+      - auth
+      - protected
+  client:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./client
+    volumes:
+      - ./client:/app
+    networks:
+      - frontend
+    depends_on:
+      - graphql
+  graphql:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./graphql-bff
+    volumes:
+      - ./graphql-bff:/app
+    networks:
+      - frontend
+      - backend
+    depends_on:
+      - auth
+      - protected
+  auth:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./auth-service
+    volumes:
+      - ./auth-service:/app
+    networks:
+      - backend
+    depends_on:
+      - db
+  protected:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./protected-service
+    volumes:
+      - ./protected-service:/app
+    networks:
+      - backend
+  db:
+    image: "mongo:latest"
+    ports:
+      - "27017:27017"
+    networks:
+      - backend
+
+networks:
+  frontend:
+  backend:

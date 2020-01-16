@@ -2,7 +2,6 @@ FROM node:alpine
 WORKDIR /app
 COPY package.json ./
 COPY yarn.lock ./
-COPY .npmrc ./
 RUN yarn install --frozen-lockfile
 COPY . .
 CMD ["yarn", "dev"]

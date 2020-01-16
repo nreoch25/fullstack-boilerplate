@@ -10,6 +10,7 @@ const isAuthenticated = async (
     const me = await authAPI.me();
     return skip;
   } catch (error) {
+    console.log("ERROR", error);
     throw new Error("Access Denied! Please login to continue");
   }
 };

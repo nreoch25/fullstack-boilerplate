@@ -5,6 +5,10 @@ import { createHttpLink } from "apollo-link-http";
 import { ApolloLink } from "apollo-link";
 // import { typeDefs, resolvers } from "../resolvers";
 
+const endpoint = process.browser
+  ? "http://localhost/graphql"
+  : "http://nginx/graphql";
+
 export default withApollo(
   // You can get headers and ctx (context) from the callback params
   // e.g. ({ headers, ctx, initialState })
@@ -24,7 +28,7 @@ export default withApollo(
     });
 
     const httpLink = createHttpLink({
-      uri: "http://localhost:8000/graphql"
+      uri: endpoint
     });
 
     const cache = new InMemoryCache().restore(initialState || {});

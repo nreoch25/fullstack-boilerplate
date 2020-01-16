@@ -14,6 +14,7 @@ const Mutation = {
       });
       return registerUser;
     } catch (error) {
+      console.log("ERROR", error);
       return {
         success: false,
         error: error.extensions.response.body.error
