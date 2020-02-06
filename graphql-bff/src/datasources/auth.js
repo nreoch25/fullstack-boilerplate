@@ -6,6 +6,7 @@ class AuthAPI extends RESTDataSource {
     this.baseURL = process.env.AUTH_API;
   }
   willSendRequest(request) {
+    // console.log("TOKEN", this.context.req.token);
     request.headers.set("Authorization", this.context.req.token);
   }
   async register(name, email, password) {

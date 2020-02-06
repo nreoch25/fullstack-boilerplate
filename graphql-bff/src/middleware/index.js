@@ -8,6 +8,7 @@ const isAuthenticated = async (
 ) => {
   try {
     const me = await authAPI.me();
+    console.log("ME", me);
     return skip;
   } catch (error) {
     console.log("ERROR", error);

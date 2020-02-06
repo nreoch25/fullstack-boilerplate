@@ -27,11 +27,13 @@ app.use((req, res, next) => {
   // Check Authorization header first
   const { authorization } = req.headers;
   if (authorization) {
+    console.log("AUTHORIZATION", authorization);
     req.token = authorization;
   } else {
     // Check Cookie if no Authorization header is found
     const { "fsb-token": fsbToken } = req.cookies;
     if (fsbToken) {
+      console.log("COOKIE", fsbToken);
       req.token = `Bearer ${fsbToken}`;
     }
   }

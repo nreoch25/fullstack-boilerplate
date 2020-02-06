@@ -49,6 +49,11 @@ const Header = () => {
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="ml-auto" navbar>
+            <NavItem>
+              <Link href="/protected">
+                <NavLink href="/">Protected</NavLink>
+              </Link>
+            </NavItem>
             {!data.me && (
               <Fragment>
                 <NavItem>
@@ -66,11 +71,6 @@ const Header = () => {
 
             {data.me && (
               <Fragment>
-                <NavItem>
-                  <Link href="/protected">
-                    <NavLink href="/">Protected</NavLink>
-                  </Link>
-                </NavItem>
                 <UncontrolledDropdown nav inNavbar>
                   <DropdownToggle nav caret>
                     {data.me.name}

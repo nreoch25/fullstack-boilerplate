@@ -18,7 +18,7 @@ const Register = () => {
       if (!data.register.success) {
         setValues({ ...values, error: data.register.error, message: "" });
       } else {
-        localStorage.setItem("fsb-token", `Bearer ${data.register.token}`);
+        localStorage.setItem("fsb-token", data.register.token);
         setValues({
           name: "",
           email: "",
