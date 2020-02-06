@@ -55,6 +55,14 @@ services:
       - ./protected-service:/app
     networks:
       - backend
+  message:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./message-service
+    volumes:
+      - ./message-service:/app
+    networks:
+      - backend
   db:
     image: "mongo:latest"
     ports:
