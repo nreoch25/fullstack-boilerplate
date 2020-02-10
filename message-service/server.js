@@ -2,6 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const colors = require("colors");
 const dotenv = require("dotenv");
+const connectDB = require("./database");
 // Routes
 const message = require("./routes/message");
 
@@ -10,7 +11,11 @@ dotenv.config();
 
 const app = express();
 
+// Connect to Database
+connectDB();
+
 // Middleware
+app.use(express.json());
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }

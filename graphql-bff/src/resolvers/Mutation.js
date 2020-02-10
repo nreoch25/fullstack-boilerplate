@@ -1,3 +1,6 @@
+const { combineResolvers } = require("graphql-resolvers");
+const { isAuthenticated } = require("../middleware");
+
 const Mutation = {
   register: async (
     root,
@@ -46,7 +49,29 @@ const Mutation = {
     return {
       message: "User logged out successfully"
     };
-  }
+  },
+  createMessage: combineResolvers(
+    isAuthenticated,
+    async (
+      root,
+      { input: { sender, receiver, text } },
+      { dataSources: { messageAPI } },
+      info
+    ) => {
+      try {
+        const { message } = await messageAPI.createMessage(
+          sender,
+          receiver,
+          text
+        );
+        console.log("MESSAGE", message);
+        return message;
+      } catch (error) {
+        console.log("ERROR", error);
+        return null;
+      }
+    }
+  )
 };
 
 module.exports = Mutation;

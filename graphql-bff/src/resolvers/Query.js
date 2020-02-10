@@ -20,6 +20,18 @@ const Query = {
         return null;
       }
     }
+  ),
+  messages: combineResolvers(
+    isAuthenticated,
+    async (root, args, { dataSources: { messageAPI } }, info) => {
+      try {
+        const { messages } = await messageAPI.allMessages();
+        console.log("MESSAGES", messages);
+        return messages;
+      } catch (error) {
+        return null;
+      }
+    }
   )
 };
 

@@ -2,12 +2,21 @@ import { ApolloClient } from "apollo-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import withApollo from "next-with-apollo";
 import { createHttpLink } from "apollo-link-http";
-import { ApolloLink } from "apollo-link";
+import { ApolloLink, split } from "apollo-link";
+import { WebSocketLink } from "apollo-link-ws";
+import { getMainDefinition } from "apollo-utilities";
 // import { typeDefs, resolvers } from "../resolvers";
+
+interface Definition {
+  kind: string;
+  operation?: string;
+}
 
 const endpoint = process.browser
   ? "http://localhost/graphql"
   : "http://nginx/graphql";
+
+const wsEndpoint = "ws://localhost/graphql";
 
 export default withApollo(
   // You can get headers and ctx (context) from the callback params
@@ -31,10 +40,41 @@ export default withApollo(
       uri: endpoint
     });
 
+    const wsLink: any = process.browser
+      ? new WebSocketLink({
+          uri: wsEndpoint,
+          options: {
+            reconnect: true,
+            connectionParams: () => {
+              const token = localStorage.getItem("fsb-token");
+              if (token) {
+                return { authToken: token };
+              }
+              return {};
+            }
+          }
+        })
+      : () => {
+          console.log("SSR");
+        };
+
+    const link = split(
+      ({ query }) => {
+        const { kind, operation }: Definition = getMainDefinition(query);
+        return (
+          kind === "OperationDefinition" &&
+          operation === "subscription" &&
+          process.browser
+        );
+      },
+      wsLink,
+      httpLink
+    );
+
     const cache = new InMemoryCache().restore(initialState || {});
 
     return new ApolloClient({
-      link: authLink.concat(httpLink),
+      link: authLink.concat(link),
       cache,
       connectToDevTools: true
       // typeDefs,

@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-const MessageSchema = new mongoose.Schema({
+const MessageSchema = new Schema({
   text: { type: String, required: true },
-  sender: { ref: "User", type: Schema.Types.ObjectId },
-  receiver: { ref: "User", type: Schema.Types.ObjectId },
+  sender: { type: String, required: true },
+  receiver: { type: String, required: true },
   createdAt: {
     type: Date,
     default: Date.now

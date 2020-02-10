@@ -14,16 +14,18 @@
     "apollo-cache-inmemory": "^1.6.5",
     "apollo-client": "^2.6.8",
     "apollo-link-http": "^1.5.16",
+    "apollo-link-ws": "^1.0.19",
     "graphql": "^14.5.8",
     "graphql-tag": "^2.10.1",
     "next": "^9.1.7",
     "next-with-apollo": "^4.3.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "reactstrap": "^8.2.0"
+    "reactstrap": "^8.2.0",
+    "subscriptions-transport-ws": "^0.9.16"
   },
   "devDependencies": {
-    "@types/node": "^13.1.4",
+    "@types/node": "^13.7.0",
     "@types/react": "^16.9.17",
     "@types/reactstrap": "^8.2.0",
     "typescript": "^3.7.4"

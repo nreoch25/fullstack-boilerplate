@@ -10,6 +10,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 const AuthAPI = require("./src/datasources/auth");
 const ProtectedAPI = require("./src/datasources/protected");
+const MessageAPI = require("./src/datasources/message");
 
 const typeDefs = gql(
   readFileSync("./src/schema.graphql", { encoding: "utf-8" })
@@ -45,13 +46,17 @@ const apolloServer = new ApolloServer({
   resolvers,
   dataSources: () => ({
     authAPI: new AuthAPI(),
-    protectedAPI: new ProtectedAPI()
+    protectedAPI: new ProtectedAPI(),
+    messageAPI: new MessageAPI()
   }),
   context: ({ req, res }) => {
     return {
       req,
       res
     };
+  },
+  subscriptions: (params, socket) => {
+    console.log("SUBSCRIPTIONS", params);
   }
 });
 
@@ -64,7 +69,8 @@ apolloServer.applyMiddleware({
 app.get(
   "/playground",
   expressPlayground({
-    endpoint: "/graphql"
+    endpoint: "/graphql",
+    subscriptionEndpoint: `ws://localhost${graphQLServer.graphqlPath}`
   })
 );
 

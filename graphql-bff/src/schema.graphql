@@ -13,16 +13,24 @@ type Auth {
 type Query {
   me: User
   protected: Message!
+  messages: [ChatMessage]!
 }
 
 type Message {
   message: String!
 }
 
+type ChatMessage {
+  sender: String!
+  receiver: String!
+  text: String!
+}
+
 type Mutation {
   register(input: registerInput!): Auth!
   login(input: loginInput!): Auth!
   logout: Message!
+  createMessage(input: createMessageInput!): ChatMessage!
 }
 
 input registerInput {
@@ -34,4 +42,10 @@ input registerInput {
 input loginInput {
   email: String!
   password: String!
+}
+
+input createMessageInput {
+  sender: String!
+  receiver: String!
+  text: String!
 }
