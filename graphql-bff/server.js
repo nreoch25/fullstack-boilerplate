@@ -1,5 +1,5 @@
 const express = require("express");
-const { ApolloServer, gql } = require("apollo-server-express");
+const { ApolloServer, gql, PubSub } = require("apollo-server-express");
 const expressPlayground = require("graphql-playground-middleware-express")
   .default;
 const { readFileSync } = require("fs");
@@ -19,6 +19,7 @@ const resolvers = require("./src/resolvers");
 
 const app = express();
 const port = process.env.PORT || 8000;
+const pubsub = new PubSub();
 
 // Cookie Parser
 app.use(cookieParser());
@@ -52,11 +53,14 @@ const apolloServer = new ApolloServer({
   context: ({ req, res }) => {
     return {
       req,
-      res
+      res,
+      pubsub
     };
   },
-  subscriptions: (params, socket) => {
-    console.log("SUBSCRIPTIONS", params);
+  subscriptions: {
+    onConnect: async (params, socket) => {
+      // This is where websockets are authenticated
+    }
   }
 });
 
@@ -70,13 +74,14 @@ app.get(
   "/playground",
   expressPlayground({
     endpoint: "/graphql",
-    subscriptionEndpoint: `ws://localhost${graphQLServer.graphqlPath}`
+    subscriptionEndpoint: `ws://localhost${apolloServer.graphqlPath}`
   })
 );
 
 const PORT = process.env.PORT || 8000;
 
 const httpServer = createServer(app);
+apolloServer.installSubscriptionHandlers(httpServer);
 
 httpServer.listen(port, () => {
   console.log(`Server listening on PORT ${PORT}`.magenta.bold);

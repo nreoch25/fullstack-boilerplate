@@ -1,5 +1,5 @@
 type User {
-  id: ID!
+  _id: ID!
   name: String!
   email: String!
 }
@@ -12,25 +12,30 @@ type Auth {
 
 type Query {
   me: User
-  protected: Message!
-  messages: [ChatMessage]!
+  protected: SuccessMessage!
+  messages: [Message]!
 }
 
 type Message {
-  message: String!
-}
-
-type ChatMessage {
+  _id: ID!
   sender: String!
   receiver: String!
   text: String!
 }
 
+type SuccessMessage {
+  message: String!
+}
+
 type Mutation {
   register(input: registerInput!): Auth!
   login(input: loginInput!): Auth!
-  logout: Message!
-  createMessage(input: createMessageInput!): ChatMessage!
+  logout: SuccessMessage!
+  createMessage(input: createMessageInput!): Message!
+}
+
+type Subscription {
+  newMessage: Message!
 }
 
 input registerInput {

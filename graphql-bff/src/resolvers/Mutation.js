@@ -55,7 +55,7 @@ const Mutation = {
     async (
       root,
       { input: { sender, receiver, text } },
-      { dataSources: { messageAPI } },
+      { dataSources: { messageAPI }, pubsub },
       info
     ) => {
       try {
@@ -65,6 +65,7 @@ const Mutation = {
           text
         );
         console.log("MESSAGE", message);
+        pubsub.publish("message-added", { newMessage: message });
         return message;
       } catch (error) {
         console.log("ERROR", error);
