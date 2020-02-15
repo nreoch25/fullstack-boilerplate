@@ -50,20 +50,25 @@ const Header = () => {
         <Collapse isOpen={isOpen} navbar>
           <Nav className="ml-auto" navbar>
             <NavItem>
+              <Link href="/messages">
+                <NavLink style={{ cursor: "pointer" }}>Messages</NavLink>
+              </Link>
+            </NavItem>
+            <NavItem>
               <Link href="/protected">
-                <NavLink href="/">Protected</NavLink>
+                <NavLink style={{ cursor: "pointer" }}>Protected</NavLink>
               </Link>
             </NavItem>
             {!data.me && (
               <Fragment>
                 <NavItem>
                   <Link href="/register">
-                    <NavLink href="/">Register</NavLink>
+                    <NavLink style={{ cursor: "pointer" }}>Register</NavLink>
                   </Link>
                 </NavItem>
                 <NavItem>
                   <Link href="/login">
-                    <NavLink href="/login">Login</NavLink>
+                    <NavLink style={{ cursor: "pointer" }}>Login</NavLink>
                   </Link>
                 </NavItem>
               </Fragment>

@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import { Component, Fragment } from "react";
 import { Container } from "reactstrap";
 import Header from "./Header";
 
