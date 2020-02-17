@@ -10,12 +10,6 @@ type Auth {
   error: String
 }
 
-type Query {
-  me: User
-  protected: SuccessMessage!
-  messages: [Message]!
-}
-
 type Message {
   _id: ID!
   sender: String!
@@ -25,6 +19,13 @@ type Message {
 
 type SuccessMessage {
   message: String!
+}
+
+type Query {
+  me: User
+  users: [User]!
+  protected: SuccessMessage!
+  messages: [Message]!
 }
 
 type Mutation {

@@ -67,8 +67,21 @@ const getMe = asyncHandler(async (req, res, next) => {
   });
 });
 
+// @desc      Get all the users
+// @route     GET /api/v1/auth/users
+// @access    Private
+const getUsers = asyncHandler(async (req, res, next) => {
+  const users = await User.find({});
+  console.log("USERS", users);
+  res.status(200).json({
+    success: true,
+    data: users
+  });
+});
+
 module.exports = {
   register,
   login,
-  getMe
+  getMe,
+  getUsers
 };

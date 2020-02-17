@@ -10,6 +10,17 @@ const Query = {
       return null;
     }
   },
+  users: combineResolvers(
+    isAuthenticated,
+    async (root, args, { dataSources: { authAPI } }, info) => {
+      try {
+        const users = await authAPI.users();
+        return users.data;
+      } catch (error) {
+        return null;
+      }
+    }
+  ),
   protected: combineResolvers(
     isAuthenticated,
     async (root, args, { dataSources: { protectedAPI } }, info) => {

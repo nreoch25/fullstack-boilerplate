@@ -21,6 +21,10 @@ class AuthAPI extends RESTDataSource {
     const response = await this.get("me");
     return response;
   }
+  async users() {
+    const response = await this.get("users");
+    return response;
+  }
 }
 
 module.exports = AuthAPI;
