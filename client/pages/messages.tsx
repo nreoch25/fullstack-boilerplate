@@ -1,14 +1,11 @@
 import Layout from "../components/Layout";
-import Private from "../components/Auth/Private";
+import User from "../components/Auth/User";
 import Messages from "../components/Messages";
-import CreateMessage from "../components/Messages/CreateMessage";
 
 const MessagesPage = () => {
   return (
     <Layout>
-      <Private>
-        <Messages />
-      </Private>
+      <User>{me => <Messages me={me} />}</User>
     </Layout>
   );
 };

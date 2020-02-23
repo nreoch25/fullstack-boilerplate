@@ -5,7 +5,6 @@ import { createHttpLink } from "apollo-link-http";
 import { ApolloLink, split } from "apollo-link";
 import { WebSocketLink } from "apollo-link-ws";
 import { getMainDefinition } from "apollo-utilities";
-// import { typeDefs, resolvers } from "../resolvers";
 
 interface Definition {
   kind: string;
@@ -77,8 +76,6 @@ export default withApollo(
       link: authLink.concat(link),
       cache,
       connectToDevTools: true
-      // typeDefs,
-      // resolvers
     });
   }
 );

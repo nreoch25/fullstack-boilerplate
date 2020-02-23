@@ -34,9 +34,10 @@ const Query = {
   ),
   messages: combineResolvers(
     isAuthenticated,
-    async (root, args, { dataSources: { messageAPI } }, info) => {
+    async (root, { user }, { dataSources: { messageAPI } }, info) => {
       try {
-        const { messages } = await messageAPI.allMessages();
+        console.log("QUERY USER", user);
+        const { messages } = await messageAPI.allMessages(user);
         console.log("MESSAGES", messages);
         return messages;
       } catch (error) {

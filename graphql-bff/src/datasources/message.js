@@ -5,8 +5,9 @@ class MessageAPI extends RESTDataSource {
     super();
     this.baseURL = process.env.MESSAGE_API;
   }
-  async allMessages() {
-    const response = await this.get("all");
+  async allMessages(user) {
+    console.log("USER", user);
+    const response = await this.get("all", { user });
     return response;
   }
   async createMessage(sender, receiver, text) {

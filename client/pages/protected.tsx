@@ -1,13 +1,11 @@
 import Layout from "../components/Layout";
-import Private from "../components/Auth/Private";
+import User from "../components/Auth/User";
 import Protected from "../components/Protected";
 
 const ProtectedPage = () => {
   return (
     <Layout>
-      <Private>
-        <Protected />
-      </Private>
+      <User>{me => <Protected me={me} />}</User>
     </Layout>
   );
 };

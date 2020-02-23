@@ -4,14 +4,20 @@ import { useQuery, useSubscription } from "@apollo/react-hooks";
 import MESSAGES_QUERY from "../../graphql/messages.query";
 import NEW_MESSAGE_SUBSCRIPTION from "../../graphql/new-message.subscription";
 
-const MessagesList = () => {
-  const { data, loading, error } = useQuery(MESSAGES_QUERY);
+const MessagesList = ({ me }) => {
+  const { data, loading, error } = useQuery(MESSAGES_QUERY, {
+    variables: { user: me.name }
+  });
   useSubscription(NEW_MESSAGE_SUBSCRIPTION, {
     shouldResubscribe: false,
     onSubscriptionData: ({ client, subscriptionData }) => {
-      const { messages } = client.readQuery({ query: MESSAGES_QUERY });
+      const { messages } = client.readQuery({
+        query: MESSAGES_QUERY,
+        variables: { user: me.name }
+      });
       client.writeQuery({
         query: MESSAGES_QUERY,
+        variables: { user: me.name },
         data: { messages: [...messages, subscriptionData.data.newMessage] }
       });
     }

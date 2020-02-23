@@ -25,7 +25,7 @@ type Query {
   me: User
   users: [User]!
   protected: SuccessMessage!
-  messages: [Message]!
+  messages(user: String!): [Message]!
 }
 
 type Mutation {

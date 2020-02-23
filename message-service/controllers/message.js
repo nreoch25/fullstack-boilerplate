@@ -5,8 +5,10 @@ const Message = require("../models/Message");
 // @route     GET /api/v1/message
 // @access    Private
 const allMessages = asyncHandler(async (req, res, next) => {
-  const messages = await Message.find({});
-  console.log("MESSAGES", messages);
+  const { user } = req.query;
+  const messages = await Message.find({
+    $or: [{ sender: user }, { receiver: user }]
+  });
   res.json({ messages });
 });
 
@@ -14,7 +16,6 @@ const allMessages = asyncHandler(async (req, res, next) => {
 // @route     POST /api/v1/message
 // @access    Private
 const createMessage = asyncHandler(async (req, res, next) => {
-  console.log("REQ BODY", req.body);
   const { sender, receiver, text } = req.body;
   const newMessage = new Message({
     sender,
@@ -22,7 +23,6 @@ const createMessage = asyncHandler(async (req, res, next) => {
     text
   });
   const message = await newMessage.save();
-  console.log("MESSAGE", message);
   res.json({ message });
 });
 

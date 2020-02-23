@@ -1,12 +1,17 @@
 import { Fragment } from "react";
+import Router from "next/router";
 import MessagesList from "./MessagesList";
 import CreateMessage from "./CreateMessage";
 
-const Messages = () => {
+const Messages = ({ me }) => {
+  if (process.browser && !me) {
+    Router.push("/login");
+    return null;
+  }
   return (
     <Fragment>
-      <MessagesList />
-      <CreateMessage />
+      <MessagesList me={me} />
+      <CreateMessage me={me} />
     </Fragment>
   );
 };

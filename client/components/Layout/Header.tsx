@@ -19,10 +19,14 @@ import LOGOUT_MUTATION from "../../graphql/logout.mutation";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { loading, error, data } = useQuery(ME_QUERY);
+  const { client, loading, error, data } = useQuery(ME_QUERY);
   const [logout] = useMutation(LOGOUT_MUTATION, {
-    onCompleted: () => Router.push("/login"),
-    refetchQueries: [{ query: ME_QUERY }]
+    onCompleted: async () => {
+      await client.clearStore();
+      await client.resetStore();
+      Router.push("/login");
+    }
+    // refetchQueries: [{ query: ME_QUERY }]
   });
 
   const toggle = () => setIsOpen(!isOpen);

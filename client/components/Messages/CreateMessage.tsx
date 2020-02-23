@@ -1,17 +1,15 @@
 import { Fragment, useState } from "react";
-import { useMutation, useQuery } from "@apollo/react-hooks";
+import { useMutation } from "@apollo/react-hooks";
 import { Button, Form, FormGroup, Input, Label } from "reactstrap";
 import CREATE_MESSAGE_MUTATION from "../../graphql/create-message.mutation";
-import ME_QUERY from "../../graphql/me.query";
 import Receivers from "./Receivers";
 
-const CreateMessage = () => {
-  const { data, loading, error } = useQuery(ME_QUERY);
+const CreateMessage = ({ me }) => {
   const [receiver, setReceiver] = useState("--  Please select a user --");
   const [text, setText] = useState("");
 
   const [createMessage] = useMutation(CREATE_MESSAGE_MUTATION, {
-    onCompleted: data => {
+    onCompleted: () => {
       setReceiver("--  Please select a user --");
       setText("");
     }
@@ -33,16 +31,8 @@ const CreateMessage = () => {
     if (text === "") {
       return alert("Please add a message body!");
     }
-    createMessage({ variables: { sender: data.me.name, receiver, text } });
+    createMessage({ variables: { sender: me.name, receiver, text } });
   };
-
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    return <p>Error: {JSON.stringify(error.message)}</p>;
-  }
 
   return (
     <Fragment>
@@ -60,7 +50,7 @@ const CreateMessage = () => {
             placeholder="Type your email"
             onChange={handleChange("receiver")}
           >
-            <Receivers me={data.me} />
+            <Receivers me={me} />
           </Input>
         </FormGroup>
         <FormGroup>

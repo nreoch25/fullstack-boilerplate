@@ -1,8 +1,8 @@
 import gql from "graphql-tag";
 
 const MESSAGES_QUERY = gql`
-  query {
-    messages {
+  query MESSAGES_QUERY($user: String!) {
+    messages(user: $user) {
       _id
       sender
       receiver
