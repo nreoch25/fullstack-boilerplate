@@ -58,9 +58,7 @@ const apolloServer = new ApolloServer({
     };
   },
   subscriptions: {
-    onConnect: async (params, socket) => {
-      // This is where websockets are authenticated
-    }
+    onConnect: async (params, socket, context) => {}
   }
 });
 

@@ -2,6 +2,7 @@ import { Fragment, useState } from "react";
 import { useMutation } from "@apollo/react-hooks";
 import { Button, Form, FormGroup, Input, Label } from "reactstrap";
 import CREATE_MESSAGE_MUTATION from "../../graphql/create-message.mutation";
+import MESSAGES_QUERY from "../../graphql/messages.query";
 import Receivers from "./Receivers";
 
 const CreateMessage = ({ me }) => {
@@ -12,6 +13,17 @@ const CreateMessage = ({ me }) => {
     onCompleted: () => {
       setReceiver("--  Please select a user --");
       setText("");
+    },
+    update: (cache, { data: { createMessage } }) => {
+      const { messages } = cache.readQuery({
+        query: MESSAGES_QUERY,
+        variables: { user: me.name }
+      });
+      cache.writeQuery({
+        query: MESSAGES_QUERY,
+        variables: { user: me.name },
+        data: { messages: messages.concat([createMessage]) }
+      });
     }
   });
 

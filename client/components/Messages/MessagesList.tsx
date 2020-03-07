@@ -9,6 +9,7 @@ const MessagesList = ({ me }) => {
     variables: { user: me.name }
   });
   useSubscription(NEW_MESSAGE_SUBSCRIPTION, {
+    variables: { user: me.name },
     shouldResubscribe: false,
     onSubscriptionData: ({ client, subscriptionData }) => {
       const { messages } = client.readQuery({

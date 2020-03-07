@@ -1,8 +1,8 @@
 import gql from "graphql-tag";
 
 const NEW_MESSAGE_SUBSCRIPTION = gql`
-  subscription {
-    newMessage {
+  subscription($user: String!) {
+    newMessage(user: $user) {
       _id
       sender
       receiver

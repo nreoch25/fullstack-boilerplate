@@ -64,8 +64,11 @@ const Mutation = {
           receiver,
           text
         );
-        console.log("MESSAGE", message);
-        pubsub.publish("message-added", { newMessage: message });
+        // console.log("RECEIVER", receiver);
+        pubsub.publish("message-added", {
+          newMessage: message,
+          user: receiver
+        });
         return message;
       } catch (error) {
         console.log("ERROR", error);
